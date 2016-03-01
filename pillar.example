@@ -1,0 +1,76 @@
+backupmanager:
+  temp_dir: /tmp
+  repository:
+    root:   /var/archives
+    secure: true
+    user:   root
+    group:  root
+    chmod:  770
+  tarball:
+    nameformat: long
+    filetype: tar.gz
+    over_ssh: false
+    dumpsymlinks: false
+    targets:
+      - /etc/
+      - /boot/
+    blacklist:
+      - /dev
+      - /sys
+      - /proc
+      - /tmp
+    slicesize: 1000
+    extra_options:
+  archive:
+    chmod:  660
+    ttl: 5
+    frequency: daily
+    recursivepurge: false
+    purgedups: true
+    prefix: $hostname
+    strictpurge: true
+    nice_level: 10
+    method: tarball
+  mysql:
+    databases:
+      - toto
+      - titi
+    host:   localhost
+  pgsql:
+    host:   localhost
+    databases: 'paf pif'
+  upload:
+    method: ssh
+    destination: /tmp
+    ssh:
+      user: toto
+      key:  toto.key
+      hosts:
+        - toto.com
+        - titi.org
+      gpg_recipient: POUF
+    ftp:
+      secure:     false
+      passive:    true
+      timeout:    120
+    s3:
+      destination: paf
+      access_key: access
+      secret_key: secret
+  pipe:
+    0:
+      command: ssh host -c \"mysqldump -ufoo -pbar base\"
+      name: base
+      filetype: sql
+      compress: gzip
+    1:
+      command: ssh host -c \"mysqldump -ufoo -pbar base\"
+      name: base
+      filetype: sql
+      compress: gzip
+  tarballinc:
+      masterdatetype: weekly
+      masterdatevalue: 1
+  commands:
+      pre_backup: /root/pre_backup.sh
+      post_backup: /root/post_backup.sh
