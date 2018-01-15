@@ -47,7 +47,12 @@ backupmanager:
       hosts:
         - toto.com
         - titi.org
-      gpg_recipient: POUF
+    sshgpg:
+      user: toor
+      key:  toor.key
+      hosts:
+        - tata.net
+      recipient: POUF
     ftp:
       secure:     false
       passive:    true
