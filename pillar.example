@@ -40,7 +40,6 @@ backupmanager:
     host:   localhost
     databases: 'paf pif'
   upload:
-    method: ssh
     destination: /tmp
     ssh:
       user: toto
