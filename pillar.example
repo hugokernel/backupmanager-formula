@@ -75,6 +75,5 @@ backupmanager:
   tarballinc:
       masterdatetype: weekly
       masterdatevalue: 1
-  commands:
-      pre_backup: /root/pre_backup.sh
-      post_backup: /root/post_backup.sh
+  pre_backup_command: /root/pre_backup.sh
+  post_backup_command: /root/post_backup.sh
