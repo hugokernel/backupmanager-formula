@@ -6,6 +6,13 @@ backupmanager:
   pkg.installed:
     - name: {{ map.get('pkg') }}
 
+{{ map.repository.root }}:
+  file.directory:
+    - user: {{ map.user }}
+    - group: {{ map.group }}
+    - mode: {{ map.chmod }}
+    - makedirs: True
+
 {{ map.get('cron-daily-file') }}:
   file.managed:
     - user:     root
