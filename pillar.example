@@ -62,13 +62,11 @@ backupmanager:
       access_key: access
       secret_key: secret
   pipe:
-    0:
-      command: ssh host -c \"mysqldump -ufoo -pbar base\"
+    - command: ssh host -c \"mysqldump -ufoo -pbar base\"
       name: base
       filetype: sql
       compress: gzip
-    1:
-      command: ssh host -c \"mysqldump -ufoo -pbar base\"
+    - command: ssh host -c \"mysqldump -ufoo -pbar base\"
       name: base
       filetype: sql
       compress: gzip
