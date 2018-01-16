@@ -30,7 +30,6 @@ backupmanager:
     prefix: $hostname
     strictpurge: true
     nice_level: 10
-    method: tarball
   mysql:
     databases:
       - toto
