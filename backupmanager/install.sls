@@ -1,26 +1,24 @@
 {% from "backupmanager/map.jinja" import map with context %}
 
-{% set cron_file = salt['pillar.get']('backupmanager:lookup:cron_file', 'salt://backupmanager/files/cron.sh') %}
-
 backupmanager:
   pkg.installed:
-    - name: {{ map.get('pkg') }}
+    - name: {{ map.lookup.pkg }}
 
 {{ map.repository.root }}:
   file.directory:
-    - user: {{ map.user }}
-    - group: {{ map.group }}
-    - mode: {{ map.chmod }}
+    - user: {{ map.repository.user }}
+    - group: {{ map.repository.group }}
+    - mode: {{ map.repository.chmod }}
     - makedirs: True
 
-{{ map.get('cron-daily-file') }}:
+{{ map.lookup.cron_file }}:
   file.managed:
     - user:     root
     - group:    root
     - mode:     751
     - template: jinja
-    - source:   {{ cron_file }}
+    - source:   {{ map.lookup.cron_file_source }}
     - defaults:
-          bin: {{ map.get('bin', '/usr/sbin/backup-manager') }}
+          bin: {{ map.lookup.bin }}
     - context:
         included: False
