@@ -1,132 +1,34 @@
-lookup:
-  template_file: salt://backupmanager/files/backup-manager-postgres.conf
-  cron_file : /etc/cron.daily/backup-manager
-temp_dir: /tmp
+backupmanager:
+  lookup:
+    pkg: backup-manager
+    bin: /usr/sbin/backupmanager
+    conf_file: /etc/backup-manager.conf
+    conf_file_source: salt://backupmanager/files/backup-manager.conf
+    cron_file : /etc/cron.daily/backup-manager
+    cron_file_source: salt://backupmanager/files/cron.sh
 
-repository:
-  root:   /var/archives
-  secure: true
-  user:   root
-  group:  root
-  chmod:  770
+  temp_dir: /tmp
 
-archive:
-  chmod:          660
-  ttl:            5
-  frequency:      daily
-  recursivepurge: false
-  purgedups:      true
-  prefix:         $hostname
-  strictpurge:    true
-  nice_level:     10
-  archive_method: tarball
+  repository:
+    root:   /var/archives
+    secure: true
+    user:   root
+    group:  root
+    chmod:  770
 
-tarball:
-  nameformat:     long
-  filetype:       tar.gz
-  over_ssh:       false
-  dumpsymlinks:   false
-  targets:
-    - /etc/
-    - /boot
-  blacklist:
-    - /dev/
-    - /sys
-    - proc
-    - /tmp
-  slicesize: 1000M
-  extra_options:
-  masterdatetype: weekly
-  masterdatevalue: 1
+  archive:
+    chmod:          660
+    ttl:            5
+    frequency:      daily
+    recursivepurge: false
+    purgedups:      true
+    prefix:         $HOSTNAME
+    strictpurge:    true
+    nice_level:     10
 
-mysql:
-  databases:    __ALL__
-  safedumps:    true
-  adminlogin:   root
-  adminpass:
-  host:         localhost
-  port:         3306
-  filetype:     bzip2
-  extra_options:
-  separately:   true
-  dbexclude:
+  logger: "true"
+  logger_level: warning
+  logger_facility: user
 
-pgsql:
-   databases:   __ALL__
-   adminlogin:  root
-   adminpass:
-   host:        localhost
-   port:        5432
-   filetype:    bzip2
-   extra_options:
-
-svn:
-  repositories:
-  compresswith: bzip2
-
-upload:
-  method:
-  hosts:
-  destination:
-  ssh:
-    user:
-    key:
-    hosts:
-    port:
-    destination:
-    purge:
-    ttl:
-    gpg_recipient:
-  ftp:
-    secure:     false
-    passive:    true
-    timeout:    120
-    test:       false
-    user:
-    password:
-    hosts:
-    purge:
-    ttl:
-    destination:
-  s3:
-    destination:
-    access_key:
-    secret_key:
-    purge:  false
-    ttl:
-  rsync:
-    directories:
-    destination:
-    hosts:
-    dumpsymlinks: false
-    blacklist:
-    extra_options:
-    bandwidth_limit:
-  burning:
-    method:     none
-    chkmd5:     false
-    device:     /dev/cdrom
-    devforced:
-    iso_flags:  -R -J
-    maxsize:    650
-
-pipe:
-  0:
-    command: ssh host -c \"mysqldump -ufoo -pbar base\"
-    name: base
-    filetype: sql
-    compress: gzip
-  1:
-    command: ssh host -c \"mysqldump -ufoo -pbar base\"
-    name: base
-    filetype: sql
-    compress: gzip
-
-logger:
-    active:     true
-    level:      warning
-    facility:   user
-
-commands:
-    pre_backup:
-    post_backup:
+  pre_backup_command:
+  post_backup_command:

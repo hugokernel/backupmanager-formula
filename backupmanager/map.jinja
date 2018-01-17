@@ -1,19 +1,4 @@
-{% set map = salt['grains.filter_by']({
-    'Debian': {
-        'pkg': 'backup-manager',
-        'conf-file': '/etc/backup-manager.conf',
-        'bin': '/usr/sbin/backup-manager',
-        'cron-daily-file': '/etc/cron.daily/backup-manager',
-        'user': 'backup',
-        'group': 'backup',
-    },
-    'Ubuntu': {
-        'pkg': 'backup-manager',
-        'conf-file': '/etc/backup-manager.conf',
-        'bin': '/usr/sbin/backup-manager',
-        'cron-daily-file': '/etc/cron.daily/backup-manager',
-        'user': 'backup',
-        'group': 'backup',
-    },
+{% import_yaml "backupmanager/defaults.yaml" as defaults %}
 
-}, grain='os', merge=salt['pillar.get']('backupmanager:lookup')) %}
+{# merge the actual backupmanager pillar into defaults #}
+{% set map = salt['pillar.get']('backupmanager', default=defaults.backupmanager, merge=True) %}

@@ -30,7 +30,6 @@ backupmanager:
     prefix: $hostname
     strictpurge: true
     nice_level: 10
-    method: tarball
   mysql:
     databases:
       - toto
@@ -40,7 +39,6 @@ backupmanager:
     host:   localhost
     databases: 'paf pif'
   upload:
-    method: ssh
     destination: /tmp
     ssh:
       user: toto
@@ -48,7 +46,12 @@ backupmanager:
       hosts:
         - toto.com
         - titi.org
-      gpg_recipient: POUF
+    sshgpg:
+      user: toor
+      key:  toor.key
+      hosts:
+        - tata.net
+      recipient: POUF
     ftp:
       secure:     false
       passive:    true
@@ -58,19 +61,16 @@ backupmanager:
       access_key: access
       secret_key: secret
   pipe:
-    0:
-      command: ssh host -c \"mysqldump -ufoo -pbar base\"
+    - command: ssh host -c \"mysqldump -ufoo -pbar base\"
       name: base
       filetype: sql
       compress: gzip
-    1:
-      command: ssh host -c \"mysqldump -ufoo -pbar base\"
+    - command: ssh host -c \"mysqldump -ufoo -pbar base\"
       name: base
       filetype: sql
       compress: gzip
   tarballinc:
       masterdatetype: weekly
       masterdatevalue: 1
-  commands:
-      pre_backup: /root/pre_backup.sh
-      post_backup: /root/post_backup.sh
+  pre_backup_command: /root/pre_backup.sh
+  post_backup_command: /root/post_backup.sh

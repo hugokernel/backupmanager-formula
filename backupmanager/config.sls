@@ -1,13 +1,11 @@
 {% from "backupmanager/map.jinja" import map with context %}
 
-{% set template_file = salt['pillar.get']('backupmanager:lookup:template_file', 'salt://backupmanager/files/backup-manager.conf') %}
-
-{{ map.get('conf-file') }}:
+{{ map.lookup.conf_file }}:
   file.managed:
-    - user:     {{ map.get('user', 'root') }}
-    - group:    {{ map.get('group', 'root') }}
-    - mode:     440
+    - user:     root
+    - group:    {{ map.repository.group }}
+    - mode:     640
     - template: jinja
-    - source:   {{ template_file }}
+    - source:   {{ map.lookup.conf_file_source }}
     - context:
         included: False
