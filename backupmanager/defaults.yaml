@@ -1,7 +1,7 @@
 backupmanager:
   lookup:
     pkg: backup-manager
-    bin: /usr/sbin/backupmanager
+    bin: /usr/sbin/backup-manager
     conf_file: /etc/backup-manager.conf
     conf_file_source: salt://backupmanager/files/backup-manager.conf
     cron_file : /etc/cron.daily/backup-manager
